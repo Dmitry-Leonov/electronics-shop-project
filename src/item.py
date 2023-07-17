@@ -48,6 +48,9 @@ class Item:
 
     @classmethod
     def instantiate_from_csv(cls):
+        """
+        класс-метод, инициализирующий экземпляры класса Item данными из файла src/items.csv
+        """
         cls.all = []
         with open('..\src\items.csv', encoding='windows-1251') as file:
             DictReader_obj = csv.DictReader(file)
@@ -56,4 +59,7 @@ class Item:
 
     @staticmethod
     def string_to_number(string):
+        """
+        статический метод, возвращающий число из числа-строки
+        """
         return int(float(string))
