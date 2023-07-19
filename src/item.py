@@ -41,7 +41,7 @@ class Item:
 
     def apply_discount(self) -> None:
         """ Применяет установленную скидку для конкретного товара. """
-        self.price = self.price * self.pay_rate
+        self.price *= self.pay_rate
 
     @classmethod
     def instantiate_from_csv(cls):
@@ -58,10 +58,14 @@ class Item:
 
     @staticmethod
     def string_to_number(string):
-        """
-        статический метод, возвращающий число из числа-строки
-        """
-        return int(float(string))
+        """ Статический метод, возвращающий целое число из числа - строки """
+        if '.' in string:
+            number = float(string)
+            return int(number)
+        elif string.isdigit():
+            return int(string)
+        else:
+            raise ValueError('Невозможно преобразовать строку в число.')
 
     def __repr__(self):
         return f"{self.__class__.__name__}('{self.name}', {self.price}, {self.quantity})"

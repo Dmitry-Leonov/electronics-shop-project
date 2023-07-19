@@ -57,10 +57,20 @@ def test_instantiate_from_csv():
     assert len(Item.all) == 5
 
 
-def test_string_to_number(testing_data):
-    assert Item.string_to_number('5') == 5
-    assert Item.string_to_number('5.0') == 5
-    assert Item.string_to_number('5.5') == 5
+@pytest.mark.parametrize('test_input, expected', [
+    ('10', 10),
+    ('5.5', 5),
+    ('105.8', 105),
+    ('abc', None),
+    ('apple', None)
+])
+def test_string_to_number(test_input, expected):
+    """ Тест на проверку корректности перевода строки в целое число """
+    if expected is not None:
+        assert Item.string_to_number(test_input) == expected
+    else:
+        with pytest.raises(ValueError):
+            Item.string_to_number(test_input)
 
 
 def test___repr__(testing_data):
