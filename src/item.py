@@ -1,4 +1,5 @@
 import csv
+import os
 
 
 class Item:
@@ -33,26 +34,24 @@ class Item:
             self.__name = value
 
     def calculate_total_price(self) -> float:
-        """
-        Рассчитывает общую стоимость конкретного товара в магазине.
-
+        """Рассчитывает общую стоимость конкретного товара в магазине.
         :return: Общая стоимость товара.
         """
         return float(self.price * self.quantity)
 
     def apply_discount(self) -> None:
-        """
-        Применяет установленную скидку для конкретного товара.
-        """
+        """ Применяет установленную скидку для конкретного товара. """
         self.price = self.price * self.pay_rate
 
     @classmethod
     def instantiate_from_csv(cls):
-        """
-        класс-метод, инициализирующий экземпляры класса Item данными из файла src/items.csv
-        """
+        """ класс-метод, инициализирующий экземпляры класса Item данными из файла src/items.csv """
         cls.all = []
-        with open('..\src\items.csv', encoding='windows-1251') as file:
+        src_path = os.path.dirname(__file__)
+        src_filename = "items.csv"
+        file_path = os.path.join(src_path, src_filename)
+        #with open('..\src\items.csv', encoding='windows-1251') as file:
+        with open(file_path, encoding='windows-1251') as file:
             DictReader_obj = csv.DictReader(file)
             for item in DictReader_obj:
                 cls(item['name'], float(item['price']), int(item['quantity']))
@@ -63,3 +62,9 @@ class Item:
         статический метод, возвращающий число из числа-строки
         """
         return int(float(string))
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}('{self.name}', {self.price}, {self.quantity})"
+
+    def __str__(self):
+        return f"{self.name}"
