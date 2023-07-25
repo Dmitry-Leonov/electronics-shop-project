@@ -72,3 +72,10 @@ class Item:
 
     def __str__(self):
         return f"{self.name}"
+
+    def __add__(self, other):
+        """Метод сложения количества телефонов класса Item и его наследников"""
+        if not isinstance(other, Item):
+            raise ValueError
+        return self.quantity + other.quantity
+
