@@ -76,6 +76,6 @@ class Item:
     def __add__(self, other):
         """Метод сложения количества телефонов класса Item и его наследников"""
         if not isinstance(other, Item):
-            raise ValueError
+            raise ValueError('Складывать можно только экземпляры Item и Phone')
         return self.quantity + other.quantity
 
