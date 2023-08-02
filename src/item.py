@@ -65,7 +65,7 @@ class Item:
                 #     raise InstantiateCSVError("Файл items.csv поврежден")
                 for item in DictReader_obj:
 
-                    # Вариант 2 вызова исключения (отсутствие поля по имени
+                    # Вариант 2 вызова исключения (отсутствие поля по имени)
                     if not all(col in item for col in required_columns):
                         raise InstantiateCSVError("Файл items.csv поврежден")
                     cls(item['name'], float(item['price']), int(item['quantity']))
