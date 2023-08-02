@@ -1,6 +1,9 @@
 import csv
 import os
 
+class InstantiateCSVError(Exception):
+    """Выбрасывается когда отсутствуют одно или несколько полей в файле items.csv"""
+    pass
 
 class Item:
     """
@@ -50,11 +53,24 @@ class Item:
         src_path = os.path.dirname(__file__)
         src_filename = "items.csv"
         file_path = os.path.join(src_path, src_filename)
-        #with open('..\src\items.csv', encoding='windows-1251') as file:
-        with open(file_path, encoding='windows-1251') as file:
-            DictReader_obj = csv.DictReader(file)
-            for item in DictReader_obj:
-                cls(item['name'], float(item['price']), int(item['quantity']))
+        # with open('..\src\items.csv', encoding='windows-1251') as file:
+        required_columns = ['name', 'price', 'quantity']
+        try:
+            with open(file_path, encoding='windows-1251') as file:
+                DictReader_obj = csv.DictReader(file)
+
+                # Вариант 1 вызsва исключения (кол-во полей меньше 3)
+
+                # if len(DictReader_obj.fieldnames) < 3:
+                #     raise InstantiateCSVError("Файл items.csv поврежден")
+                for item in DictReader_obj:
+
+                    # Вариант 2 вызова исключения (отсутствие поля по имени
+                    if not all(col in item for col in required_columns):
+                        raise InstantiateCSVError("Файл items.csv поврежден")
+                    cls(item['name'], float(item['price']), int(item['quantity']))
+        except FileNotFoundError:
+            raise FileNotFoundError("Отсутствует файл items.csv")
 
     @staticmethod
     def string_to_number(string):
@@ -78,4 +94,3 @@ class Item:
         if not isinstance(other, Item):
             raise ValueError('Складывать можно только экземпляры Item и Phone')
         return self.quantity + other.quantity
-
