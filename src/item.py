@@ -11,6 +11,7 @@ class Item:
     """
     pay_rate = 1.0
     all = []
+    data_path = os.path.join(os.path.dirname(__file__), "items.csv")
 
     def __init__(self, name: str, price: float, quantity: int) -> None:
         """
@@ -50,22 +51,12 @@ class Item:
     def instantiate_from_csv(cls):
         """ класс-метод, инициализирующий экземпляры класса Item данными из файла src/items.csv """
         cls.all = []
-        src_path = os.path.dirname(__file__)
-        src_filename = "items.csv"
-        file_path = os.path.join(src_path, src_filename)
         # with open('..\src\items.csv', encoding='windows-1251') as file:
         required_columns = ['name', 'price', 'quantity']
         try:
-            with open(file_path, encoding='windows-1251') as file:
-                DictReader_obj = csv.DictReader(file)
-
-                # Вариант 1 вызsва исключения (кол-во полей меньше 3)
-
-                # if len(DictReader_obj.fieldnames) < 3:
-                #     raise InstantiateCSVError("Файл items.csv поврежден")
-                for item in DictReader_obj:
-
-                    # Вариант 2 вызова исключения (отсутствие поля по имени)
+            with open(cls.data_path, encoding='windows-1251') as file:
+                dict_reader_obj = csv.DictReader(file)
+                for item in dict_reader_obj:
                     if not all(col in item for col in required_columns):
                         raise InstantiateCSVError("Файл items.csv поврежден")
                     cls(item['name'], float(item['price']), int(item['quantity']))

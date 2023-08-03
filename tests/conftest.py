@@ -4,5 +4,5 @@ from src.item import Item
 
 
 @pytest.fixture
-def item():
-    return Item("Смартфон", 10000, 20)
+def testing_data():
+    return Item("Samsung", 100.0, 10)
